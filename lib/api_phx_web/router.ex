@@ -8,7 +8,8 @@ defmodule ApiPhxWeb.Router do
   scope "/api", ApiPhxWeb do
     pipe_through :api
 
-    get "/servidores", PessoalController, :getPessoal
-    get "/servidor/:matricula", PessoalController, :getPessoalMat 
+    get "/servidores", ServidorController, :getServidor
+    get "/servidor/:matricula", ServidorController, :getServidorMat 
+    post "/servidor/", ServidorController, :postServidor 
   end
 end
