@@ -7,8 +7,8 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :api_phx, ApiPhxWeb.Endpoint,
-  http: [port: 8080],
-  # https: [port: 8080, keyfile: "priv/server.key", certfile: "priv/server.pem"],
+  #http: [port: 80],
+  https: [port: 443, keyfile: "priv/server.key", certfile: "priv/server.pem"],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
