@@ -60,17 +60,30 @@ defmodule ApiPhxWeb.ServidorController do
         error = False
         if not Regex.match?(~r/^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/, Map.get(parameters, "data_nascimento", "default")) do
             {error, reasons} = {True, reasons ++ [%{"Reason" => "[data_nascimento] missing or failed to match API requirements. It should look like this: 1969-02-12"}]}
+        else
+            dateJson = String.splitter(Map.get(parameters, "data_nascimento"),"-") |> Enum.take(3)
+            {_,dateJson} = Date.new(elem(List.to_tuple(dateJson),0)|> String.to_integer, elem(List.to_tuple(dateJson),1)|> String.to_integer, elem(List.to_tuple(dateJson),2)|> String.to_integer)
+            {dateNow, _}= :calendar.local_time()
+            {_,dateNow} = Date.new(elem(dateNow,0), elem(dateNow,1), elem(dateNow,2))
+            if Date.compare(dateJson,dateNow) == :gt do
+                {error, reasons} = {True, reasons ++ [%{"Reason" => "[data_nascimento] missing or failed to match API requirements. It should not be in future"}]}
+            end  
         end
         if not Regex.match?(~r/^([A-Z][a-z]+([ ]?[a-z]?['-]?[A-Z][a-z]+)*)$/, Map.get(parameters, "nome", "default")) do            
             {error, reasons} = {True, reasons ++ [%{"Reason" => "[name] missing or failed to match API requirements. It should look like this: Firstname Middlename(optional) Lastname"}]}
         end
+        if String.length(Map.get(parameters, "nome", "default")) > 100 do
+            {error, reasons} = {True, reasons ++ [%{"Reason" => "[name] missing or failed to match API requirements. It shoud have a maximum of 100 characters"}]}
+        end
         if not Regex.match?(~r/^([A-Z][a-z]+([ ]?[a-z]?['-]?[A-Z][a-z]+)*)$/, Map.get(parameters, "nome_identificacao", "default")) do
             {error, reasons} = {True, reasons ++ [%{"Reason" => "[nome_identificacao] missing or failed to match API requirements. It should look like this: Firstname Middlename(optional) Lastname"}]}
+        end
+        if String.length(Map.get(parameters, "nome_identificacao", "default")) > 100 do
+            {error, reasons} = {True, reasons ++ [%{"Reason" => "[nome_identificacao] missing or failed to match API requirements. It shoud have a maximum of 100 characters"}]}
         end
         if not Regex.match?(~r/\b[MF]{1}\b/, Map.get(parameters, "sexo", "default")) do
             {error, reasons} = {True, reasons ++ [%{"Reason" => "[sexo] missing or failed to match API requirements. It should look like this: M for male, F for female"}]}
         end
-        IO.inspect "PRE NUBMER"
         if not is_number Map.get(parameters, "id_pessoa") do
             {error, reasons} = {True, reasons ++ [%{"Reason" => "[id_pessoa] missing or failed to match API requirements. It should be numeric. "}]}
         end
