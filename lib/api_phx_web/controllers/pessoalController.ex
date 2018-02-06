@@ -14,7 +14,6 @@ defmodule ApiPhxWeb.ServidorController do
           |> put_status(:ok)
     end
   
-  
     def getServidor(conn, _params) do
         query = "select s.id_servidor, s.siape, s.id_pessoa, s.matricula_interna, s.nome_identificacao,
         p.nome, p.data_nascimento, p.sexo from rh.servidor s
@@ -108,8 +107,8 @@ defmodule ApiPhxWeb.ServidorController do
             
                 case Ecto.Adapters.SQL.query(ApiPhx.Repo, query) do
                     {:ok, res} -> 
-                        IO.inspect res
-                        json conn_with_status(conn, 201), nil
+                        conn = %{conn | resp_headers: [{"location", (ApiPhxWeb.Router.Helpers.url(conn) <> "/api/servidor/" <> Integer.to_string(mat))}]}
+                        text conn_with_status(conn, 201), nil
                     {:error, error} -> 
                         json conn_with_status(conn, 500), %{"Reason" => error}
                 end
