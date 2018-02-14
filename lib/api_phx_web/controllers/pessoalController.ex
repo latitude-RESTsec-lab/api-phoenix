@@ -86,9 +86,6 @@ defmodule ApiPhxWeb.ServidorController do
         if not is_number Map.get(parameters, "id_pessoa") do
             {error, reasons} = {True, reasons ++ [%{"Reason" => "[id_pessoa] missing or failed to match API requirements. It should be numeric. "}]}
         end
-        if not is_number Map.get(parameters, "matricula_interna") do
-            {error, reasons} = {True, reasons ++ [%{"Reason" => "[matricula_interna] missing or failed to match API requirements. It should be numeric. "}]}
-        end
         if not is_number Map.get(parameters, "siape") do
             {error, reasons} = {True, reasons ++ [%{"Reason" => "[siape] missing or failed to match API requirements. It should be numeric. "}]}
         end
