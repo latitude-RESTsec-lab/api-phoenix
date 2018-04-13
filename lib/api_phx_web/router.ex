@@ -9,7 +9,8 @@ defmodule ApiPhxWeb.Router do
     pipe_through :api
 
     get "/servidores", ServidorController, :getServidor
-    get "/servidor/:matricula", ServidorController, :getServidorMat 
-    post "/servidor/", ServidorController, :postServidor 
+    get "/servidor/:matricula", ServidorController, :getServidorMat
+    post "/servidor/", ServidorController, :postServidor
+    post "/calculo/", ServidorController, :calculate
   end
 end

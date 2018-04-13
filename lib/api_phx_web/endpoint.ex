@@ -23,7 +23,9 @@ defmodule ApiPhxWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
+    length: 100_000_000,
     json_decoder: Poison
+
 
   plug Plug.MethodOverride
   plug Plug.Head

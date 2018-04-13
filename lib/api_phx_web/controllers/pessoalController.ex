@@ -107,10 +107,8 @@ defmodule ApiPhxWeb.ServidorController do
         end
     end
     def calculate(conn, parameters) do
-        reasons = []
-        error = False
-        #REGEX checking
-        IO.puts(Map.get(parameters))
+        list = Map.get(parameters,"matrix"))
+        IO.inspect(Map.to_list(Map.get(parameters,"matrix")))
         #END OF REGEX
 
         # if
